@@ -1,0 +1,12 @@
+{
+  "name": "mvue-module-template-for-vue-init",
+  "version": "1.0.0",
+  "license": "MIT",
+  "description": "可供 vue init 命令安装的元数据mvue module模板工程",
+  "scripts": {
+    
+  },
+  "devDependencies": {
+    "vue-cli": "^2.8.1"
+  }
+}
