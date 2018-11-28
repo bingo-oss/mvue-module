@@ -28,5 +28,5 @@ module.exports = {
   "filters": {
     
   },
-  "completeMessage": "开始运行你的项目:\n\n  {{^inPlace}}cd {{destDirName}}\n  {{/inPlace}}npm install\n  npm run dev\n\n"
+  "completeMessage": "开始运行你的项目:\n\n  {{^inPlace}}cd {{destDirName}}\n  {{/inPlace}}npm install\n  npm run build\n\n"
 };
