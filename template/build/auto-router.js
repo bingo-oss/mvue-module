@@ -74,6 +74,7 @@ function run(devMode){
     writeJs(pagesPath,JSON.stringify(routes,(key,value)=>{
         if(key=="component"){
             if(value){
+                value=value.replace(pagesPath,'.');
                 return `##require_placeholder_begin##('${value}')##require_placeholder_end##`;
             }else{
                 return undefined;
