@@ -1,5 +1,5 @@
 //全局组件样式在这里引入，避免在内部重复引用
-require('./components/components.scss');
+require('./components/components.less');
 import context from './libs/context';
 
 import autoRoutes from './pages/auto-routes';
