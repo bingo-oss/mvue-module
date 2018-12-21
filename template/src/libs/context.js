@@ -1,6 +1,5 @@
 import components from '../index';
 import operations from './operations';
-import formControls from './form-controls';
 var context={
     appCtx:null,
     initAfterAppCtxCreated(appCtx){
@@ -12,6 +11,7 @@ var context={
         if(appCtx.getMvueCore){
             //注册操作
             appCtx.getMvueCore().operationManager.register(operations);
+            var formControls=require('./form-controls').default;
             //注册表单组件
             if(!_.isEmpty(formControls)){
                 appCtx.getMvueCore().formControlManager.register(formControls);
