@@ -13,3 +13,4 @@ selenium-debug.log
 yarn.lock
 src/pages/auto-routes.js
 src/pages/auto-page-confs.js
+src/ai/*
