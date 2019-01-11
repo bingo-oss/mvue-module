@@ -7,6 +7,11 @@ var autoConfs = require('./auto-confs');
 var watched=false;
 var changedQueue=[];
 var sleep = require('thread-sleep');
+const aiBaseParentPath = path.join(__dirname,'../src/ai');
+const aiBasePath = path.join(aiBaseParentPath,'pages');
+const pagesRelativePath='src/pages';
+const pagesPath=path.join(__dirname,`../${pagesRelativePath}`);
+const routerRelativePath='../../pages';
 function smartRun(i){
     //console.log("--------"+i);
     //如果数据变化，先往变化队列推一条数据
@@ -27,7 +32,7 @@ function smartRun(i){
 /**
  * 监听pages目录文件夹变化，重新生成路由
  */
-function doWatch(pagesPath){
+function doWatch(){
     var vueWatcher = chokidar.watch(pagesPath+'/**/*.@(vue|js)', {ignoreInitial: true ,persistent: true});
     vueWatcher
         .on('add', path => smartRun(1))
@@ -41,15 +46,22 @@ function doWatch(pagesPath){
  * 自动扫描 src/pages/ 下的所有vue文件按文件名生成默认的路由
  */
 function run(devMode){
-    var pagesPath='src/pages';
+    let baseParentPathExists=fs.existsSync(aiBaseParentPath);
+    if(!baseParentPathExists){
+        fs.mkdirSync(aiBaseParentPath);
+    }
+    let basePathExists=fs.existsSync(aiBasePath);
+    if(!basePathExists){
+        fs.mkdirSync(aiBasePath);
+    }
     var pageTmplDir='';
     var ignoreFiles=`src/pages/@(auto-page-confs|auto-routes).js`;
     if(devMode&&!watched){
         watched=true;
-        doWatch(pagesPath)
+        doWatch()
     }
     const files = {};
-    glob.sync(`${pagesPath}/**/*.@(vue|js)`,{ignore:ignoreFiles}).forEach(f=>{
+    glob.sync(`${pagesRelativePath}/**/*.@(vue|js)`,{ignore:ignoreFiles}).forEach(f=>{
         const key = f.replace(/\.(js|vue)$/, '')
         if (/\.vue$/.test(f) || !files[key]) {
             files[key] = f.replace(/('|")/g, '\\$1')
@@ -66,15 +78,15 @@ function run(devMode){
     //console.log(filesValues);
     var routes=nuxtUtils.createRoutes(
         filesValues,
-        pagesPath,
-        pagesPath,
+        pagesRelativePath,
+        pagesRelativePath,
         pageTmplDir
     )
     //console.log(JSON.stringify(routes));
-    writeJs(pagesPath,JSON.stringify(routes,(key,value)=>{
+    writeJs(JSON.stringify(routes,(key,value)=>{
         if(key=="component"){
             if(value){
-                value=value.replace(pagesPath,'.');
+                value=value.replace(pagesRelativePath,routerRelativePath);
                 return `##require_placeholder_begin##('${value}')##require_placeholder_end##`;
             }else{
                 return undefined;
@@ -86,15 +98,15 @@ function run(devMode){
         }
     },'\t'))
     //动态打包所有的组件配置到一个文件
-    autoConfs.run(pagesPath,routes);
+    autoConfs.run(routes);
     //某些系统下，同步写文件之后webpack监听程序并不知道，所以稍等两秒
     sleep(2000);
 }
-function writeJs(filePath,routes){
+function writeJs(routes){
     routes=routes.replace(/\"##require_placeholder_begin##/g,'require').replace(/##require_placeholder_end##\"/g,'');
     var jsContent=`var autoRoutes=${routes}
 export default autoRoutes`;
-    var outputFile=path.join(__dirname,'../',filePath,'auto-routes.js')
+    var outputFile=path.join(aiBasePath,'auto-routes.js')
     //console.log(outputFile)
     //console.dir(__dirname)
     fs.writeFileSync(outputFile,jsContent)

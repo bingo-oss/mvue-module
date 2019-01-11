@@ -2,8 +2,8 @@
 require('./components/components.less');
 import context from './libs/context';
 
-import autoRoutes from './pages/auto-routes';
-import autoPageConfs from './pages/auto-page-confs';
+import autoRoutes from './ai/pages/auto-routes';
+import autoPageConfs from './ai/pages/auto-page-confs';
 import menus from './menus';
 
 var moduleDef={
@@ -23,7 +23,7 @@ var moduleDef={
 };
 //安装你的全局组件: Vue.component('',require(''));
 function installComponents(Vue){
-
+    
 }
 //Vue插件安装入口函数
 function install(Vue, opts = {}) {
