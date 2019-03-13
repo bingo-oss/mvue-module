@@ -26,7 +26,7 @@ function buildConf(autoConfs,routes,parentPath){
             autoConfs[key]=`##require_placeholder_begin##('${confValue}')##require_placeholder_end##`;
         }
         if(ele.children){
-            buildConf(pagesRelativePath,autoConfs,ele.children,ele.path);
+            buildConf(autoConfs,ele.children,ele.path);
         }
     }
 }
