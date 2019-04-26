@@ -20,6 +20,36 @@ var context={
     },
     initAfterAppStarted(appCtx){
 
+    },
+    getMvueCore(){
+        if(!this.appCtx){
+            return {};
+        }
+        return this.appCtx.getMvueCore();
+    },
+    getMvueToolkit(){
+        if(!this.appCtx){
+            return {};
+        }
+        return this.appCtx.getMvueToolkit();
+    },
+    getConfig(){
+        if(!this.appCtx){
+            return {};
+        }
+        return this.appCtx.getMvueToolkit().config;
+    },
+    getConfigVal(key){
+        if(!this.appCtx){
+            return null;
+        }
+        return this.appCtx.getMvueToolkit().config.getConfigVal(key);
+    },
+    buildResource: function (url, actions, _options) {
+        if(!this.appCtx){
+            return null;
+        }
+        return this.appCtx.getMvueCore().buildResource(url, actions, _options);
     }
 };
 export default context;

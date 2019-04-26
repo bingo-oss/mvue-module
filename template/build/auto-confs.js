@@ -25,8 +25,14 @@ function buildConf(autoConfs,routes,parentPath){
             let confValue=ele.meta.file.replace(pagesRelativePath,routerRelativePath);
             autoConfs[key]=`##require_placeholder_begin##('${confValue}')##require_placeholder_end##`;
         }
-        if(ele.children){
-            buildConf(autoConfs,ele.children,ele.path);
+        if(ele.children){ 
+            let pPath;  
+            if (!parentPath) {
+                pPath = ele.path;  
+            } else {
+                pPath = parentPath + '/' + ele.path;  
+            } 
+            buildConf(autoConfs,ele.children, pPath); 
         }
     }
 }
