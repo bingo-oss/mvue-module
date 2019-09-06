@@ -49,7 +49,7 @@ var context={
         if(!this.appCtx){
             return null;
         }
-        return this.appCtx.getMvueCore().buildResource(url, actions, _options);
+        return this.appCtx.getMvueToolkit().resource(url, actions, _options);
     }
 };
 export default context;
