@@ -6,6 +6,7 @@ var merge = require('webpack-merge')
 var baseWebpackConfig = require('./webpack.base.conf')
 var nodeExternals = require('webpack-node-externals')
 
+
 var env = process.env.NODE_ENV === 'testing'
   ? require('../config/test.env')
   : config.lib.env
@@ -30,13 +31,7 @@ var webpackConfig = merge(baseWebpackConfig, {
   externals: [nodeExternals({
       //需要打包到bundle中的特殊node_modules模块：非dependencies默认包含的模块（平台工程没有引入的模块）
       whitelist: []
-  })],
-  plugins: [
-    // http://vuejs.github.io/vue-loader/en/workflow/production.html
-    new webpack.DefinePlugin({
-      'process.env': env
-    })
-  ]
+  })]
 })
 
 if (config.lib.productionGzip) {
